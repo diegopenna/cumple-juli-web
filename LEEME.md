@@ -20,3 +20,7 @@ Reemplazar `assets/musica.mp3` por la canción elegida, conservando el nombre. L
 Fondo floral generado con la herramienta integrada ImageGen. Prompt: fondo vertical de papel artesanal pistacho, flores blancas y rosa suave en las esquinas, hojas de eucalipto y trazos dorados, centro amplio vacío, sin texto ni mariposas. Las mariposas son SVG animados en CSS, con respeto por la preferencia de movimiento reducido.
 
 Archivos de diseño fuente y generación de la música en `tools/` cuando corresponda. La primera versión se prepara localmente para revisar antes de publicar.
+
+## Invitaciones personalizadas
+
+Editar `invitados.json` con códigos únicos y su descripción. Ejemplo: `?cod=Ale` (o `&cod=Ale` si hay otros parámetros). El código distingue mayúsculas. Sin código aparece el formulario original con nombre; un código válido muestra la descripción en portada y confirmación, oculta el campo de nombre y usa la descripción en WhatsApp. Un código inválido o un error de carga muestra un aviso y permite escribir el nombre. Servir por HTTP para cargar el JSON. El JSON es público en una web estática.

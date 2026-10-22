@@ -65,3 +65,25 @@
   .welcome-date { font-size: 10px; padding: 4px 9px; }
   .welcome .text-button { padding: 9px 12px; }
 }
+
+/* Textos sobre las flores, sin placas ni recuadros. */
+.welcome .eyebrow,
+.hero .eyebrow,
+.welcome-date,
+.top-rsvp,
+.scroll-cue,
+.welcome .text-button {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  color: #25331c;
+  text-shadow: 0 1px 2px #fffbeacc, 0 0 7px #fffbea99;
+}
+
+/* Destinatarios de las invitaciones por código. */
+.personal-invitation { margin: 24px auto 0; max-width: 420px; }
+.personal-invitation .eyebrow { background: transparent; padding: 0; font-size: 10px; }
+#invitees-title { display: block; font: 600 30px var(--serif); line-height: 1.2; margin-top: 10px; overflow-wrap: anywhere; }
+.personal-confirmation { font-weight: 600; overflow-wrap: anywhere; }
+#invitation-error { font-size: 11px; }
+.button:disabled { opacity: .6; cursor: wait; }

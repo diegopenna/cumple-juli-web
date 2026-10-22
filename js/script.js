@@ -41,25 +41,58 @@ updateCountdown();
 setInterval(updateCountdown, 1000);
 
 const form = document.getElementById('rsvp-form');
-const peopleField = document.getElementById('people-field');
-const guestCount = document.getElementById('guest-count');
-form.addEventListener('change', () => {
-  const attending = form.elements.attendance.value === 'yes';
-  peopleField.hidden = !attending;
-  guestCount.disabled = !attending;
-  guestCount.required = attending;
-});
+let invitationDescription = '';
+let invitationLoading = false;
+
+async function loadInvitation() {
+  const code = new URLSearchParams(window.location.search).get('cod')?.trim();
+  if (!code) return;
+  invitationLoading = true;
+  const submitButton = document.getElementById('rsvp-submit');
+  submitButton.disabled = true;
+  try {
+    const response = await fetch('invitados.json', { cache: 'no-cache' });
+    if (!response.ok) throw new Error('No se pudo cargar la lista.');
+    const guests = await response.json();
+    const guest = Array.isArray(guests) && guests.find(item => item.codigo === code);
+    if (!guest || typeof guest.descripcion !== 'string' || !guest.descripcion.trim()) throw new Error('Código desconocido.');
+    invitationDescription = guest.descripcion.trim();
+    document.getElementById('invitees-title').textContent = invitationDescription;
+    document.getElementById('personal-invitation').hidden = false;
+    document.getElementById('invitees-confirmation').textContent = `Invitación para: ${invitationDescription}`;
+    document.getElementById('invitees-confirmation').hidden = false;
+    document.getElementById('rsvp-intro').textContent = 'Indicá si van a asistir y enviame la respuesta por WhatsApp. La invitación incluye a las personas mencionadas arriba.';
+    document.getElementById('guest-name-field').hidden = true;
+    const input = document.getElementById('guest-name');
+    input.required = false;
+    input.disabled = true;
+    input.setCustomValidity('');
+  } catch {
+    const error = document.getElementById('invitation-error');
+    error.textContent = 'No pudimos encontrar tu invitación personalizada. Revisá el código del enlace. Podés confirmar escribiendo tu nombre.';
+    error.hidden = false;
+  } finally {
+    invitationLoading = false;
+    submitButton.disabled = false;
+  }
+}
+const invitationReady = loadInvitation();
+
 form.addEventListener('submit', (event) => {
   event.preventDefault();
+  if (invitationLoading) return;
   const nameInput = document.getElementById('guest-name');
-  const name = nameInput.value.trim().replace(/\s+/g, ' ');
+  const name = invitationDescription || nameInput.value.trim().replace(/\s+/g, ' ');
   if (!name) { nameInput.setCustomValidity('Escribí tu nombre y apellido.'); nameInput.reportValidity(); return; }
   nameInput.setCustomValidity('');
   if (!form.reportValidity()) return;
   const attending = form.elements.attendance.value === 'yes';
-  const count = Number(guestCount.value);
-  const message = attending
-    ? `¡Hola! Soy ${name}. 🦋 Confirmo mi asistencia a los XV de Julieta el 5 de diciembre. ${count === 1 ? 'Voy a asistir yo.' : `Vamos a ser ${count} personas en total, incluyéndome.`} ¡Nos vemos para celebrar! 💚`
+  const message = invitationDescription
+    ? (attending
+      ? `¡Hola! 🦋 Confirmamos la asistencia a los XV de Julieta el 5 de diciembre. Invitación para: ${name}. ¡Nos vemos para celebrar! 💚`
+      : `¡Hola! Gracias por la invitación a los XV de Julieta para: ${name}. Lamentablemente no podremos asistir. ¡Te deseamos una noche hermosa! 🦋💚`)
+    : attending
+    ? `¡Hola! Soy ${name}. 🦋 Confirmo mi asistencia a los XV de Julieta el 5 de diciembre. ¡Nos vemos para celebrar! 💚`
     : `¡Hola! Soy ${name}. Gracias por invitarme a los XV de Julieta. Lamentablemente no voy a poder asistir. ¡Te deseo una noche hermosa! 🦋💚`;
   window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
   document.getElementById('form-feedback').textContent = 'Recordá enviar el mensaje en WhatsApp para confirmar tu respuesta.';

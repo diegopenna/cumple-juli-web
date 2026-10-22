@@ -14,19 +14,15 @@ function node(id) {
 }
 const opened = [];
 node('rsvp-form').elements = { attendance: { value: 'yes' } };
-node('guest-count').value = '3';
-const context = { document: { getElementById: node, body: node('body'), activeElement: null }, navigator: { clipboard: { writeText: async text => assert.equal(text, 'julieta-md') } }, window: { open: url => opened.push(new URL(url)) }, setInterval() {}, Date, console };
+const context = { document: { getElementById: node, body: node('body'), activeElement: null }, navigator: { clipboard: { writeText: async text => assert.equal(text, 'julieta-md') } }, URLSearchParams, window: { location: { search: '' }, open: url => opened.push(new URL(url)) }, setInterval() {}, Date, console };
 vm.runInNewContext(fs.readFileSync('js/script.js', 'utf8'), context);
 const submit = () => node('rsvp-form').handlers.submit({ preventDefault() {} });
 node('guest-name').value = ' Ana   Pérez ';
 submit();
 assert.equal(opened[0].pathname, '/5491135577619');
 assert.match(opened[0].searchParams.get('text'), /Ana Pérez/);
-assert.match(opened[0].searchParams.get('text'), /3 personas/);
+assert.doesNotMatch(opened[0].searchParams.get('text'), /personas|incluyéndome/);
 node('rsvp-form').elements.attendance.value = 'no';
-node('rsvp-form').handlers.change();
-assert.equal(node('people-field').hidden, true);
-assert.equal(node('guest-count').disabled, true);
 submit();
 assert.match(opened[1].searchParams.get('text'), /no voy a poder asistir/);
 assert.doesNotMatch(opened[1].searchParams.get('text'), /personas/);
@@ -43,3 +39,27 @@ const html = fs.readFileSync('index.html', 'utf8');
 for (const [, path] of html.matchAll(/(?:src|href)="((?:assets|css|js)\/[^\"]+)"/g)) assert.ok(fs.existsSync(path), path);
 assert.equal(new Date('2026-12-05T21:00:00-03:00').toISOString(), '2026-12-06T00:00:00.000Z');
 console.log('OK: RSVP yes/no, recipient and message, blank-name rejection, music choices, local assets, event timezone.');
+
+(async () => {
+  for (const [search, matches] of [['?cod=Ale', true], ['?other=1&cod=Ale', true], ['?cod=missing', false], ['?cod=', false]]) {
+    for (const key of Object.keys(nodes)) delete nodes[key];
+    node('rsvp-form').elements = { attendance: { value: 'yes' } };
+    const urls = [];
+    const env = { ...context, window: { location: { search }, open: url => urls.push(new URL(url)) }, fetch: async () => ({ ok: true, json: async () => JSON.parse(fs.readFileSync('invitados.json', 'utf8')) }) };
+    const sandbox = vm.createContext(env);
+    vm.runInContext(fs.readFileSync('js/script.js', 'utf8'), sandbox);
+    await vm.runInContext('invitationReady', sandbox);
+    if (matches) {
+      assert.equal(node('guest-name').disabled, true);
+      assert.equal(node('guest-name-field').hidden, true);
+      assert.equal(node('invitees-title').textContent, 'Alejandro y Alejandra');
+    } else node('guest-name').value = 'Ana Pérez';
+    node('rsvp-form').handlers.submit({ preventDefault() {} });
+    assert.equal(urls.length, 1);
+    assert.match(urls[0].searchParams.get('text'), matches ? /Alejandro y Alejandra/ : /Ana Pérez/);
+    node('rsvp-form').elements.attendance.value = 'no';
+    node('rsvp-form').handlers.submit({ preventDefault() {} });
+    assert.match(urls[1].searchParams.get('text'), matches ? /no podremos asistir/ : /no voy a poder asistir/);
+  }
+  console.log('OK: personalized code, extra parameters, unknown/empty code, automatic recipient description in yes/no messages.');
+})().catch(error => { console.error(error); process.exitCode = 1; });
