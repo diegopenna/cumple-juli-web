@@ -2,3 +2,6 @@
 :root{overflow-x:clip}html:has(body.welcome-open){overflow:hidden}.welcome-inner{max-width:100%;min-width:0}.welcome h1{font-size:clamp(76px,25vw,145px)}
 @media(max-width:600px){.welcome-inner{padding:32px 24px}.welcome .xv{margin-top:24px}.welcome .ornament{margin:12px auto}.welcome-note{font-size:19px;margin-bottom:22px}.welcome-date{margin-top:22px}.hero h2{font-size:clamp(90px,29vw,115px)}}
 @media(max-height:620px){.welcome-inner{padding:22px}.welcome .eyebrow{font-size:8px}.welcome .xv{margin-top:15px;font-size:15px}.welcome h1{font-size:80px}.welcome .ornament{margin:3px auto;font-size:23px}.welcome-note{font-size:17px;margin-bottom:16px}.welcome .button{min-height:45px}.welcome .text-button{padding:12px}.welcome-date{margin-top:8px}}
+
+/* El título recibe foco al cerrar la bienvenida, sin borde visual. */
+#hero-title:focus { outline: none; }
