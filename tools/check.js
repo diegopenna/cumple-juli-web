@@ -14,7 +14,7 @@ function node(id) {
 }
 const opened = [];
 node('rsvp-form').elements = { attendance: { value: 'yes' } };
-const context = { document: { getElementById: node, body: node('body'), activeElement: null }, navigator: { clipboard: { writeText: async text => assert.equal(text, 'julieta-md') } }, URLSearchParams, window: { location: { search: '' }, open: url => opened.push(new URL(url)) }, setInterval() {}, Date, console };
+const context = { document: { getElementById: node, body: node('body'), activeElement: null }, navigator: { clipboard: { writeText: async text => assert.equal(text, 'julieta-md') } }, URLSearchParams, AbortSignal, window: { location: { search: '' }, open: url => opened.push(new URL(url)) }, setInterval() {}, Date, console };
 vm.runInNewContext(fs.readFileSync('js/script.js', 'utf8'), context);
 const submit = () => node('rsvp-form').handlers.submit({ preventDefault() {} });
 node('guest-name').value = ' Ana   Pérez ';
@@ -45,7 +45,7 @@ console.log('OK: RSVP yes/no, recipient and message, blank-name rejection, music
     for (const key of Object.keys(nodes)) delete nodes[key];
     node('rsvp-form').elements = { attendance: { value: 'yes' } };
     const urls = [];
-    const env = { ...context, window: { location: { search: search.startsWith('/') ? '' : search, pathname: search.startsWith('/') ? search : '/' }, open: url => urls.push(new URL(url)) }, fetch: async () => ({ ok: true, json: async () => JSON.parse(fs.readFileSync('invitados.json', 'utf8')) }) };
+    const env = { ...context, window: { location: { search: search.startsWith('/') ? '' : search, pathname: search.startsWith('/') ? search : '/' }, open: url => urls.push(new URL(url)) }, fetch: async () => ({ ok: true, text: async () => 'codigo,personas\nale,Alejandro y Alejandra', json: async () => JSON.parse(fs.readFileSync('invitados.json', 'utf8')) }) };
     const sandbox = vm.createContext(env);
     vm.runInContext(fs.readFileSync('js/script.js', 'utf8'), sandbox);
     await vm.runInContext('invitationReady', sandbox);
@@ -61,5 +61,15 @@ console.log('OK: RSVP yes/no, recipient and message, blank-name rejection, music
     node('rsvp-form').handlers.submit({ preventDefault() {} });
     assert.match(urls[1].searchParams.get('text'), matches ? /no podremos asistir/ : /no voy a poder asistir/);
   }
+const parserBox = vm.createContext({ ...context, window: { ...context.window, location: { search: '' } } });
+vm.runInContext(fs.readFileSync('js/script.js', 'utf8'), parserBox);
+const parsed = vm.runInContext('parseGuestCSV', parserBox)('\uFEFFcodigo,personas\r\nAle,"Alejandro, Alejandra y Sofía"\r\n\r\nGaby,"Gaby y ""Diego"""');
+assert.equal(parsed[0].descripcion, 'Alejandro, Alejandra y Sofía');
+assert.equal(parsed[1].descripcion, 'Gaby y "Diego"');
+assert.throws(() => vm.runInContext('parseGuestCSV', parserBox)('codigo,personas\na,Ana\nA,Otra'));
+assert.throws(() => vm.runInContext('parseGuestCSV', parserBox)('<html>Acceso denegado</html>'));
+console.log('OK: CSV quoted cells, accents, blank rows, BOM, duplicate codes and invalid responses.');
+
   console.log('OK: personalized code, extra parameters, unknown/empty code, automatic recipient description in yes/no messages.');
 })().catch(error => { console.error(error); process.exitCode = 1; });
+

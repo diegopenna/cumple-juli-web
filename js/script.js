@@ -2,6 +2,7 @@
 
 const EVENT_DATE = new Date('2026-12-05T21:00:00-03:00');
 const WHATSAPP_NUMBER = '5491135577619';
+const GUESTS_CSV_URL = 'https://docs.google.com/spreadsheets/d/1D1oGI5AtSwyEtWGuGl4WJGQnY3OUEZqhhf8ssweZUHo/export?format=csv';
 const music = document.getElementById('music');
 const musicToggle = document.getElementById('music-toggle');
 const musicStatus = document.getElementById('music-status');
@@ -44,6 +45,56 @@ const form = document.getElementById('rsvp-form');
 let invitationDescription = '';
 let invitationLoading = false;
 
+// CSV admite comas, saltos de línea y comillas dentro de celdas entrecomilladas.
+function parseGuestCSV(text) {
+  const rows = [];
+  let row = [], cell = '', quoted = false;
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+    if (char === '"') {
+      if (quoted && text[i + 1] === '"') { cell += '"'; i++; }
+      else if (quoted || cell === '') quoted = !quoted;
+      else throw new Error('CSV inválido.');
+    } else if (!quoted && (char === ',' || char === '\n' || char === '\r')) {
+      row.push(cell); cell = '';
+      if (char !== ',') {
+        if (row.some(value => value.trim())) rows.push(row);
+        row = [];
+        if (char === '\r' && text[i + 1] === '\n') i++;
+      }
+    } else cell += char;
+  }
+  if (quoted) throw new Error('CSV incompleto.');
+  row.push(cell);
+  if (row.some(value => value.trim())) rows.push(row);
+  const headers = (rows.shift() || []).map(value => value.replace(/^\uFEFF/, '').trim().toLowerCase());
+  const codeIndex = headers.indexOf('codigo');
+  const nameIndex = headers.includes('personas') ? headers.indexOf('personas') : headers.indexOf('descripcion');
+  if (codeIndex < 0 || nameIndex < 0) throw new Error('Faltan columnas de invitados.');
+  const seen = new Set();
+  return rows.map(values => ({ codigo: (values[codeIndex] || '').trim(), descripcion: (values[nameIndex] || '').trim() }))
+    .filter(guest => guest.codigo && guest.descripcion)
+    .map(guest => {
+      const key = guest.codigo.toLowerCase();
+      if (seen.has(key)) throw new Error('Código duplicado.');
+      seen.add(key);
+      return guest;
+    });
+}
+
+async function fetchGuests() {
+  try {
+    const response = await fetch(GUESTS_CSV_URL, { cache: 'no-cache', signal: AbortSignal.timeout(8000) });
+    if (!response.ok) throw new Error('No se pudo leer Google Sheets.');
+    return parseGuestCSV(await response.text());
+  } catch {
+    // Copia local de respaldo; solo se consulta si Google falla, no para códigos inexistentes.
+    const response = await fetch('invitados.json', { cache: 'no-cache' });
+    if (!response.ok) throw new Error('No se pudo cargar la lista.');
+    return response.json();
+  }
+}
+
 async function loadInvitation() {
   const pathMatch = (window.location.pathname || '').match(/^\/cumple-juli-web\/([^/]+)\/?$/);
   let pathCode = '';
@@ -55,9 +106,7 @@ async function loadInvitation() {
   const submitButton = document.getElementById('rsvp-submit');
   submitButton.disabled = true;
   try {
-    const response = await fetch('invitados.json', { cache: 'no-cache' });
-    if (!response.ok) throw new Error('No se pudo cargar la lista.');
-    const guests = await response.json();
+    const guests = await fetchGuests();
     const guest = Array.isArray(guests) && guests.find(item => typeof item.codigo === 'string' && item.codigo.trim().toLowerCase() === code);
     if (!guest || typeof guest.descripcion !== 'string' || !guest.descripcion.trim()) throw new Error('Código desconocido.');
     invitationDescription = guest.descripcion.trim();

@@ -1,6 +1,10 @@
 [
   {
-    "codigo": "Ale",
+    "codigo": "ale",
     "descripcion": "Alejandro y Alejandra"
+  },
+  {
+    "codigo": "gaby",
+    "descripcion": "Gaby y Diego"
   }
 ]
