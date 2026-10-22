@@ -1,0 +1,14 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Julieta//Mis XV//ES
+BEGIN:VEVENT
+UID:julieta-xv-20261205@invitacion.local
+DTSTAMP:20261022T120000Z
+DTSTART:20261206T000000Z
+DTEND:20261206T080000Z
+SUMMARY:Mis XV de Julieta
+DESCRIPTION:¡Te espero para vivir una noche inolvidable! Ubicación: https://maps.app.goo.gl/wYBB1rsQSf2HCsVo8
+LOCATION:Fray Luis Beltrán 1465\, C1842 El Jagüel\, Provincia de Buenos Aires
+URL:https://maps.app.goo.gl/wYBB1rsQSf2HCsVo8
+END:VEVENT
+END:VCALENDAR

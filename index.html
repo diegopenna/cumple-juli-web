@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#c6cda8">
+  <title>Mis XV · Julieta</title>
+  <meta name="description" content="Una noche para recordar. Acompañame a celebrar mis XV el 5 de diciembre de 2026.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Great+Vibes&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/script.js" defer></script>
+</head>
+<body class="welcome-open">
+  <svg class="svg-defs" aria-hidden="true"><defs><symbol id="butterfly" viewBox="0 0 100 80"><g stroke="#8d815b" stroke-width=".8"><g class="wing left-wing"><path d="M49 44C17-10-5 5 8 33 12 43 28 47 48 47 13 37 14 74 31 69 44 66 46 53 49 44Z" fill="currentColor"/><path d="M44 42 15 17M43 48 27 60" fill="none" opacity=".5"/></g><g class="wing right-wing"><path d="M51 44C83-10 105 5 92 33 88 43 72 47 52 47 87 37 86 74 69 69 56 66 54 53 51 44Z" fill="currentColor"/><path d="m56 42 29-25M57 48l16 12" fill="none" opacity=".5"/></g><path d="M50 32v23m0-23-7-12m7 12 7-12" fill="none" stroke-width="1.5"/></g></symbol></defs></svg>
+  <div class="butterflies" aria-hidden="true"><svg class="fly fly-one"><use href="#butterfly"/></svg><svg class="fly fly-two"><use href="#butterfly"/></svg><svg class="fly fly-three"><use href="#butterfly"/></svg></div>
+
+  <div class="welcome" id="welcome" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
+    <div class="welcome-inner">
+      <span class="eyebrow">Una noche para recordar</span>
+      <p class="xv">Mis XV</p>
+      <h1 class="script" id="welcome-title">Julieta</h1>
+      <div class="ornament" aria-hidden="true">✧</div>
+      <p class="welcome-note">Estás por entrar a una noche muy especial.</p>
+      <button class="button" id="enter-music">Entrar con música <span aria-hidden="true">♫</span></button>
+      <button class="text-button" id="enter-silent">Entrar sin música</button>
+      <span class="welcome-date">05 · 12 · 2026</span>
+    </div>
+  </div>
+
+  <div id="invitation" inert>
+    <header class="topbar"><a href="#inicio" class="monogram" aria-label="Volver al inicio">J<span>XV</span></a><a class="top-rsvp" href="#asistencia">Confirmar asistencia <span aria-hidden="true">↗</span></a></header>
+    <main>
+      <section class="hero" id="inicio" aria-labelledby="hero-title">
+        <div class="hero-content"><p class="eyebrow">Hay momentos que florecen para siempre</p><p class="xv">Mis XV</p><h2 class="script" id="hero-title">Julieta</h2><div class="hero-date"><span>05</span><i></i><span>Diciembre<br><small>2026</small></span></div><p class="hero-note">Y este quiero vivirlo con vos.</p></div>
+        <a href="#invitacion" class="scroll-cue">Descubrí la invitación<span aria-hidden="true">↓</span></a>
+      </section>
+
+      <section class="letter section-pad reveal" id="invitacion"><span class="eyebrow">Con mucha ilusión</span><h2>Una noche soñada,<br><em>personas inolvidables.</em></h2><div class="ornament" aria-hidden="true">✧</div><p>Me encantaría que disfrutes junto a mí esta noche tan especial, llena de alegría, amor y momentos inolvidables.</p><p>Gracias por acompañarme y ser parte de uno de los momentos más lindos de mi vida.</p><p class="signature">Con cariño, <span class="script">Juli</span></p></section>
+
+      <section class="countdown-section section-pad reveal" aria-labelledby="countdown-title"><span class="eyebrow">Cada vez falta menos</span><h2 id="countdown-title">La magia está por comenzar</h2><div class="countdown" role="timer" aria-label="Tiempo que falta para los XV"><div><strong id="days">00</strong><span>Días</span></div><b>:</b><div><strong id="hours">00</strong><span>Horas</span></div><b>:</b><div><strong id="minutes">00</strong><span>Minutos</span></div><b>:</b><div><strong id="seconds">00</strong><span>Segundos</span></div></div><p id="countdown-note">Guardá esta fecha en tu calendario.</p><a class="outline-button" href="assets/julieta-xv.ics" download>Agendar la fecha <span aria-hidden="true">＋</span></a></section>
+
+      <section class="occasion section-pad reveal" id="fiesta"><span class="eyebrow">El encuentro</span><h2>Nos vemos <em>en la fiesta</em></h2><div class="occasion-layout"><div class="date-card"><span>Sábado</span><strong>05</strong><span>Diciembre · 2026</span><div class="fine-rule"></div><p>De 21:00 a 05:00 hs</p></div><div class="occasion-copy"><svg class="line-icon" viewBox="0 0 40 48" aria-hidden="true"><path d="M20 44S4 27 4 18a16 16 0 0 1 32 0c0 9-16 26-16 26Z"/><circle cx="20" cy="18" r="6"/></svg><h3>Una noche para celebrar</h3><p class="venue-address"><strong>Fray Luis Beltrán 1465</strong><br>C1842 El Jagüel, Provincia de Buenos Aires</p><p>Te espero para compartir cada momento de esta noche soñada. ¡Llegá puntual para disfrutarla desde el principio!</p><a class="button" href="https://maps.app.goo.gl/wYBB1rsQSf2HCsVo8" target="_blank" rel="noopener noreferrer">Ver ubicación <span aria-hidden="true">↗</span></a></div></div></section>
+
+      <section class="details section-pad"><div class="detail-block reveal"><span class="eyebrow">Un detalle para tener en cuenta</span><h2>Código de <em>vestimenta</em></h2><svg class="line-icon hanger" viewBox="0 0 64 48" aria-hidden="true"><path d="M27 12a6 6 0 1 1 9 5l-4 3v5L5 41q-3 3 2 3h50q5 0 2-3L32 25"/></svg><p>Los tonos <strong>verdes y lilas</strong> están reservados.<br>Por favor, elegí otros colores para tu look.</p><span class="small-note">¡Gracias por acompañar este detalle especial!</span></div><div class="detail-block gift-block reveal"><span class="eyebrow">El mejor regalo</span><h2>Tu <em>compañía</em></h2><div class="ornament" aria-hidden="true">✧</div><p>Lo más lindo es que estés conmigo.<br>Si además deseás hacerme un regalo,<br>te dejo una posibilidad.</p><button class="alias-button" id="copy-alias" aria-label="Copiar alias julieta-md"><span><small>Alias</small>julieta-md</span><span aria-hidden="true">⧉</span></button><p class="copy-feedback" id="copy-feedback" role="status"></p></div></section>
+
+      <section class="rsvp section-pad reveal" id="asistencia"><span class="eyebrow">¿Compartimos esta noche?</span><h2>Contá conmigo</h2><p>Completá tus datos y enviame tu respuesta por WhatsApp.</p><form id="rsvp-form"><label for="guest-name">Nombre y apellido</label><input id="guest-name" name="name" autocomplete="name" placeholder="Tu nombre y apellido" required maxlength="100"><fieldset><legend>¿Vas a venir?</legend><label class="radio-option"><input type="radio" name="attendance" value="yes" checked><span>¡Sí, voy a estar!</span></label><label class="radio-option"><input type="radio" name="attendance" value="no"><span>No voy a poder ir</span></label></fieldset><div id="people-field"><label for="guest-count">¿Cuántas personas asistirán, incluyéndote?</label><input id="guest-count" name="count" type="number" inputmode="numeric" min="1" max="50" value="1" required></div><button class="button" type="submit">Confirmar por WhatsApp <span aria-hidden="true">↗</span></button><p class="form-note">Se abrirá WhatsApp con tu mensaje listo.<br>Tocá «Enviar» para completar la confirmación.</p><p id="form-feedback" role="status"></p></form></section>
+    </main>
+    <footer><span class="eyebrow">Te espero para vivir una noche inolvidable</span><span class="script">Julieta</span><p>Mis XV · 05.12.2026</p><svg aria-hidden="true"><use href="#butterfly"/></svg></footer>
+    <button class="music-toggle" id="music-toggle" aria-label="Activar música" aria-pressed="false"><span aria-hidden="true">♫</span></button><span class="music-status" id="music-status" role="status"></span>
+  </div>
+  <audio id="music" src="assets/musica.mp3" loop preload="none"></audio>
+</body>
