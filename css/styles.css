@@ -5,3 +5,63 @@
 
 /* El título recibe foco al cerrar la bienvenida, sin borde visual. */
 #hero-title:focus { outline: none; }
+
+/* Mayor contraste sobre el fondo floral de la bienvenida y la portada. */
+.welcome-inner,
+.hero-content,
+.topbar,
+.scroll-cue {
+  color: #2e3b25;
+}
+.welcome-inner,
+.hero-content {
+  text-shadow: 0 1px 3px #fffbea99;
+}
+.welcome .eyebrow,
+.hero .eyebrow,
+.welcome-date,
+.top-rsvp,
+.scroll-cue {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .16em;
+  background: #f7f4e9df;
+  border-radius: 3px;
+  padding: 7px 12px;
+  text-shadow: none;
+}
+.welcome .eyebrow,
+.hero .eyebrow {
+  width: fit-content;
+  margin-inline: auto;
+}
+.welcome .xv,
+.hero .xv,
+.hero-date {
+  font-weight: 600;
+}
+.welcome-note,
+.hero-note {
+  font-weight: 600;
+}
+.welcome .text-button {
+  font-size: 11px;
+  font-weight: 600;
+  background: #f7f4e9df;
+  border-radius: 3px;
+}
+.welcome-date {
+  width: fit-content;
+  margin-inline: auto;
+}
+.welcome .button {
+  background: #53623f;
+  border-color: #53623f;
+  font-weight: 600;
+  text-shadow: none;
+}
+@media (max-height: 620px) {
+  .welcome .eyebrow,
+  .welcome-date { font-size: 10px; padding: 4px 9px; }
+  .welcome .text-button { padding: 9px 12px; }
+}
