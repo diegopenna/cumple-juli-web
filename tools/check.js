@@ -41,11 +41,11 @@ assert.equal(new Date('2026-12-05T21:00:00-03:00').toISOString(), '2026-12-06T00
 console.log('OK: RSVP yes/no, recipient and message, blank-name rejection, music choices, local assets, event timezone.');
 
 (async () => {
-  for (const [search, matches] of [['?cod=Ale', true], ['?other=1&cod=Ale', true], ['?cod=missing', false], ['?cod=', false]]) {
+  for (const [search, matches] of [['?cod=Ale', true], ['?cod=ale', true], ['?cod=ALE', true], ['?other=1&cod=Ale', true], ['?cod=missing', false], ['?cod=', false], ['/cumple-juli-web/Ale', true], ['/cumple-juli-web/ale', true], ['/cumple-juli-web/ALE/', true], ['/cumple-juli-web/', false], ['/cumple-juli-web/index.html', false]]) {
     for (const key of Object.keys(nodes)) delete nodes[key];
     node('rsvp-form').elements = { attendance: { value: 'yes' } };
     const urls = [];
-    const env = { ...context, window: { location: { search }, open: url => urls.push(new URL(url)) }, fetch: async () => ({ ok: true, json: async () => JSON.parse(fs.readFileSync('invitados.json', 'utf8')) }) };
+    const env = { ...context, window: { location: { search: search.startsWith('/') ? '' : search, pathname: search.startsWith('/') ? search : '/' }, open: url => urls.push(new URL(url)) }, fetch: async () => ({ ok: true, json: async () => JSON.parse(fs.readFileSync('invitados.json', 'utf8')) }) };
     const sandbox = vm.createContext(env);
     vm.runInContext(fs.readFileSync('js/script.js', 'utf8'), sandbox);
     await vm.runInContext('invitationReady', sandbox);

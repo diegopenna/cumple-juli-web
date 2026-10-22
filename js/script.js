@@ -45,7 +45,11 @@ let invitationDescription = '';
 let invitationLoading = false;
 
 async function loadInvitation() {
-  const code = new URLSearchParams(window.location.search).get('cod')?.trim();
+  const pathMatch = (window.location.pathname || '').match(/^\/cumple-juli-web\/([^/]+)\/?$/);
+  let pathCode = '';
+  try { pathCode = pathMatch ? decodeURIComponent(pathMatch[1]) : ''; } catch { /* Un código mal formado conserva la versión genérica. */ }
+  if (pathCode.toLowerCase() === 'index.html') pathCode = '';
+  const code = (new URLSearchParams(window.location.search).get('cod') || pathCode).trim().toLowerCase();
   if (!code) return;
   invitationLoading = true;
   const submitButton = document.getElementById('rsvp-submit');
@@ -54,7 +58,7 @@ async function loadInvitation() {
     const response = await fetch('invitados.json', { cache: 'no-cache' });
     if (!response.ok) throw new Error('No se pudo cargar la lista.');
     const guests = await response.json();
-    const guest = Array.isArray(guests) && guests.find(item => item.codigo === code);
+    const guest = Array.isArray(guests) && guests.find(item => typeof item.codigo === 'string' && item.codigo.trim().toLowerCase() === code);
     if (!guest || typeof guest.descripcion !== 'string' || !guest.descripcion.trim()) throw new Error('Código desconocido.');
     invitationDescription = guest.descripcion.trim();
     document.getElementById('invitees-title').textContent = invitationDescription;
