@@ -8,7 +8,7 @@ Invitación estática para celular y escritorio. Abrir `index.html` o servir est
 - Ubicación: Fray Luis Beltrán 1465, C1842 El Jagüel, Provincia de Buenos Aires. Maps: https://maps.app.goo.gl/wYBB1rsQSf2HCsVo8
 - Verdes y lilas reservados; no se inventó un nivel de formalidad.
 - Alias: `julieta-md`.
-- WhatsApp: `5491135577619`.
+- WhatsApp: `5491161543190`.
 - El formulario prepara el mensaje; el invitado debe enviarlo en WhatsApp. No guarda respuestas ni envía automáticamente.
 
 ## Edición

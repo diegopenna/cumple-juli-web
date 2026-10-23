@@ -19,7 +19,7 @@ vm.runInNewContext(fs.readFileSync('js/script.js', 'utf8'), context);
 const submit = () => node('rsvp-form').handlers.submit({ preventDefault() {} });
 node('guest-name').value = ' Ana   Pérez ';
 submit();
-assert.equal(opened[0].pathname, '/5491135577619');
+assert.equal(opened[0].pathname, '/5491161543190');
 assert.match(opened[0].searchParams.get('text'), /Ana Pérez/);
 assert.doesNotMatch(opened[0].searchParams.get('text'), /personas|incluyéndome/);
 node('rsvp-form').elements.attendance.value = 'no';

@@ -1,7 +1,7 @@
 'use strict';
 
 const EVENT_DATE = new Date('2026-12-05T21:00:00-03:00');
-const WHATSAPP_NUMBER = '5491135577619';
+const WHATSAPP_NUMBER = '5491161543190';
 const GUESTS_CSV_URL = 'https://docs.google.com/spreadsheets/d/1D1oGI5AtSwyEtWGuGl4WJGQnY3OUEZqhhf8ssweZUHo/export?format=csv';
 const music = document.getElementById('music');
 const musicToggle = document.getElementById('music-toggle');
