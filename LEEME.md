@@ -30,3 +30,7 @@ También se aceptan rutas como `https://diegopenna.github.io/cumple-juli-web/Ale
 ## Google Sheets
 
 La fuente principal es la planilla de Google Sheets configurada en `GUESTS_CSV_URL` (`js/script.js`). Columnas: `codigo` y `personas` (también se acepta `descripcion`). Compartir para lectura sin iniciar sesión; edición solo con los organizadores. Los códigos deben ser únicos sin distinguir mayúsculas. Los cambios se consultan al abrir una invitación personalizada, sin un nuevo deploy, sujetos a la caché de Google. Si Google falla o tarda más de 8 segundos, se usa `invitados.json` como respaldo. Esta copia NO se actualiza automáticamente; debe sincronizarse y publicarse manualmente. Si el CSV es válido pero no contiene un código, no se busca en el respaldo para evitar recuperar invitados eliminados.
+
+## Miniatura al compartir
+
+Metadatos Open Graph en index.html y 404.html con imagen pública `assets/invitacion-preview.jpg`. Imagen creada con ImageGen integrado: tarjeta floral pistacho, flores crema y rosa suave, nombre Julieta en caligrafía, MIS XV y fecha 5 de diciembre de 2026; texto centrado para admitir recortes. Publicar también el JPG. Para mayor compatibilidad de vista previa compartir `/?cod=Ale`: responde HTTP 200; `/Ale` depende de 404.html y algunos rastreadores pueden omitir la miniatura. La vista previa no incluye los nombres de destinatarios y su actualización depende de la caché de la aplicación.
